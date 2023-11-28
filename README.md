@@ -64,3 +64,18 @@ python manage.py runserver
 
    ```sql
    CREATE DATABASE your_project_name;
+
+To ensure the security of sensitive information, we've excluded the `.env` file from the Git repository. Follow these steps to set up the necessary environment variables:
+
+## Create a .env file
+
+1. Create a new file named `.env` in the root of your project.
+2. Add the following content to the `.env` file, replacing placeholder values with your actual database credentials:
+
+   ```env
+   DB_ENGINE=your_db_engine
+   DB_NAME=your_db_name
+   DB_USER=your_db_user
+   DB_PASSWORD=your_db_password
+   DB_HOST=your_db_host
+   DB_PORT=your_db_port
