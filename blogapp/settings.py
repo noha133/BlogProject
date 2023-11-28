@@ -38,14 +38,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    # 'django.contrib.site',
+    'allauth',
+    'allauth.account',
+    "allauth.socialaccount",
+    'dj_rest_auth.registration',
+    # 'rest_framework_simplejwt',
     'blog',
     'user',
 ]
-
+SITE_ID = 1
+# REST_AUTH = {
+    
+#     'JWT_AUTH_RETURN_EXPIRATION': True,
+#     'USE_JWT': True,
+#     'JWT_AUTH_HTTPONLY': False,
+    
+# }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -79,8 +94,12 @@ WSGI_APPLICATION = 'blogapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog_db',
+        'USER': 'root',
+        'PASSWORD': 'Noha5410032',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -130,11 +149,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        # 'dj_rest_auth.authentication.AllAuthJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    # "NON_FIELD_ERRORS_KEY": "detail",
+ 
 }
 
 
@@ -142,3 +165,27 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# CORS_ALLOW_CREDENTIALS = True
+
+REST_AUTH = {
+    'SESSION_LOGIN': False,
+    'JWT_AUTH_RETURN_EXPIRATION': True,
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY': False,
+    
+}
+
+from datetime import datetime, timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
+    
+}
+
+# REST_SESSION_LOGIN = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+ACCOUNT_EMAIL_REQUIRED = False
