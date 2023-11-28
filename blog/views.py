@@ -4,8 +4,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics, permissions
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from user.permissions import AdminPermission, AuthorPermission, ReaderPermission
 
 
 class PostList(generics.ListCreateAPIView):
@@ -19,11 +21,26 @@ class PostList(generics.ListCreateAPIView):
         "published": ["date__lte", "date__gte", "date__exact"],
     }
 
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [AuthorPermission]
+        else:
+            # Allow 'GET' (list) for any user
+            return [ReaderPermission()]
+
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
     permission_classes = [PostUserWritePermission]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def get_permissions(self):
+        if self.request.method in ["PATCH", "PUT", "DELETE"]:
+            permission_classes = [AuthorPermission]
+        else:
+            permission_classes = [ReaderPermission , AuthorPermission]
+
+        return [permission() for permission in permission_classes]
 
 
 class CommentCreateAPIView(generics.CreateAPIView):
