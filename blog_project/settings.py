@@ -40,23 +40,18 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
-    # 'django.contrib.site',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     "allauth.socialaccount",
     'dj_rest_auth.registration',
-    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
+    'drf_yasg',
     'blog',
     'user',
 ]
 SITE_ID = 1
-# REST_AUTH = {
-    
-#     'JWT_AUTH_RETURN_EXPIRATION': True,
-#     'USE_JWT': True,
-#     'JWT_AUTH_HTTPONLY': False,
-    
-# }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
