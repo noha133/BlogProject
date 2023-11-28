@@ -66,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
+    
 ]
 
 ROOT_URLCONF = 'blogapp.urls'
@@ -151,6 +153,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         # 'dj_rest_auth.authentication.AllAuthJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
         
     ],
     'DEFAULT_PERMISSION_CLASSES': [

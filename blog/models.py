@@ -22,6 +22,27 @@ class Post(models.Model):
     attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
+    def get_likes_count(self):
+        return self.likes.count()
+
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user.username}"
+    
+# models.py
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.post.title}"
