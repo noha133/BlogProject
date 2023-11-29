@@ -11,7 +11,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     def custom_signup(self, request, user):
         user_type = self.validated_data.get('user_type')
         
-        # Add custom logic based on user_type
+    
         if user_type == 'admin':
             group_name = 'AdminGroup'
         elif user_type == 'author':
@@ -19,7 +19,6 @@ class CustomRegisterSerializer(RegisterSerializer):
         else:
             group_name = 'ReaderGroup'
 
-        # Assign the user to the corresponding group
         group, created = Group.objects.get_or_create(name=group_name)
         user.groups.add(group)
 
