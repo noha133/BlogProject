@@ -78,3 +78,12 @@ To ensure the security of sensitive information, we've excluded the `.env` file 
    DB_PASSWORD=your_db_password
    DB_HOST=your_db_host
    DB_PORT=your_db_port
+
+## API Documentation
+
+Explore the API using Swagger documentation. Here's how you can access it:
+
+### Local Development
+
+1. Make sure the project is running locally.
+2. Open your web browser and go to [http://localhost:8000/swagger/](http://localhost:8000/swagger/) to access the Swagger documentation.
