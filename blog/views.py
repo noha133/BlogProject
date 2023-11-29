@@ -15,7 +15,7 @@ class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ["content", "title"]
-    filter_fields = {
+    filterset_fields = {
         "author__first_name": ["exact"],
         "category__name": ["exact"],
         "published": ["date__lte", "date__gte", "date__exact"],
@@ -23,10 +23,10 @@ class PostList(generics.ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method == "POST":
-            return [AuthorPermission]
+            return [AuthorPermission | AdminPermission()]
         else:
             # Allow 'GET' (list) for any user
-            return [ReaderPermission()]
+            return [ReaderPermission() or AdminPermission()]
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
@@ -38,7 +38,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission)
         if self.request.method in ["PATCH", "PUT", "DELETE"]:
             permission_classes = [AuthorPermission]
         else:
-            permission_classes = [ReaderPermission , AuthorPermission]
+            permission_classes = [ReaderPermission, AuthorPermission]
 
         return [permission() for permission in permission_classes]
 
