@@ -22,7 +22,11 @@ class PostList(generics.ListAPIView):
         "published": ["date__lte", "date__gte", "date__exact"],
     }
 
- 
+
+class PostCreate(generics.CreateAPIView):
+    permission_classes = [AuthorPermission]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
