@@ -30,20 +30,14 @@ class PostCreate(generics.CreateAPIView):
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
-    permission_classes = [PostUserWritePermission]
+    permission_classes = [AuthorPermission]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    def get_permissions(self):
-        if self.request.method in ["PATCH", "PUT", "DELETE"]:
-            permission_classes = [AuthorPermission]
-        else:
-            permission_classes = [ReaderPermission, AuthorPermission]
-
-        return [permission() for permission in permission_classes]
 
 
 class CommentCreateAPIView(generics.CreateAPIView):
+    permission_classes = [ReaderPermission]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -54,6 +48,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
 
 
 class LikeToggleAPIView(APIView):
+    permission_classes = [ReaderPermission]
     def post(self, request, pk):
         post = Post.objects.get(pk=pk)
         user = request.user
