@@ -17,5 +17,10 @@ class AuthorPermission(BasePermission):
 
 
 class ReaderPermission(BasePermission):
+
     def has_permission(self, request, view):
-        return request.user.groups.filter(name="ReaderGroup").exists()
+        return (
+            request.user.groups.filter(name="ReaderGroup").exists()
+            | request.user.groups.filter(name="AdminGroup").exists()
+            | request.user.groups.filter(name="AuthorGroup").exists()
+        )

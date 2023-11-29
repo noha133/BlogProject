@@ -10,7 +10,8 @@ from .serializers import PostSerializer, CommentSerializer, LikeSerializer
 from user.permissions import AdminPermission, AuthorPermission, ReaderPermission
 
 
-class PostList(generics.ListCreateAPIView):
+class PostList(generics.ListAPIView):
+    permission_classes = [ReaderPermission]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
@@ -21,12 +22,7 @@ class PostList(generics.ListCreateAPIView):
         "published": ["date__lte", "date__gte", "date__exact"],
     }
 
-    def get_permissions(self):
-        if self.request.method == "POST":
-            return [AuthorPermission | AdminPermission()]
-        else:
-            # Allow 'GET' (list) for any user
-            return [ReaderPermission() or AdminPermission()]
+ 
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
